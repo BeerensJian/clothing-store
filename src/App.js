@@ -1,5 +1,7 @@
+import Directory from "./components/categories-container/directory.component";
+
 const App = () => {
-  return <div>Hell oworld</div>;
+  return <Directory />;
 };
 
 export default App;
