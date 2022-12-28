@@ -13,8 +13,6 @@ const FormInput = ({ label, ...otherProps }) => {
     }
   };
 
-  console.log(shrink);
-
   return (
     <div className="group">
       <input
