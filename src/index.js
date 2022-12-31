@@ -6,6 +6,7 @@ import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Authentication from "./routes/authenication/authenication.component";
+import { UserProvider } from './contexts/user.context';
 
 const Shop = () => <h1>I am the shop page</h1>;
 
@@ -33,7 +34,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </React.StrictMode>
 );
 

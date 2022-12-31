@@ -1,5 +1,6 @@
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
+
 import {
   SignInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
@@ -8,8 +9,7 @@ import {
 
 const SignInForm = () => {
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const handleSubmit = async (e) => {
@@ -18,11 +18,10 @@ const SignInForm = () => {
     const data = new FormData(form);
 
     try {
-      const response = await SignInAuthUserWithEmailAndPassword(
+      const { user } = await SignInAuthUserWithEmailAndPassword(
         data.get("email"),
         data.get("password")
       );
-      console.log(response);
     } catch (error) {
       switch (error.code) {
         case "auth/user-not-found":
@@ -40,17 +39,17 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="sign-up-container">
+    <div className='sign-up-container'>
       <h2>Have an account?</h2>
       <span>Sign In with your email and password</span>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <FormInput label="Email" type="email" required name="email" />
-        <FormInput label="Password" type="password" required name="password" />
+        <FormInput label='Email' type='email' required name='email' />
+        <FormInput label='Password' type='password' required name='password' />
 
-        <div className="button-group">
-          <Button type="submit">Sign In</Button>
+        <div className='button-group'>
+          <Button type='submit'>Sign In</Button>
           <Button
-            type="button"
+            type='button'
             buttonType={"google"}
             onClick={signInWithGoogle}
           >
