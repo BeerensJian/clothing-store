@@ -6,9 +6,9 @@ import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Authentication from "./routes/authenication/authenication.component";
-import { UserProvider } from './contexts/user.context';
-
-const Shop = () => <h1>I am the shop page</h1>;
+import { UserProvider } from "./contexts/user.context";
+import Shop from "./routes/shop/shop.component";
+import { ProductProvider } from "./contexts/product.context";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +35,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <RouterProvider router={router} />
+      <ProductProvider>
+        <RouterProvider router={router} />
+      </ProductProvider>
     </UserProvider>
   </React.StrictMode>
 );
