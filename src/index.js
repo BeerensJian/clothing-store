@@ -10,6 +10,7 @@ import { UserProvider } from "./contexts/user.context";
 import Shop from "./routes/shop/shop.component";
 import { ProductProvider } from "./contexts/product.context";
 import { CartProvider } from "./contexts/cart.context";
+import Checkout from "./routes/checkout/checkout.component";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "auth",
         element: <Authentication />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
       },
     ],
   },
