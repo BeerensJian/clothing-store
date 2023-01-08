@@ -1,10 +1,10 @@
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
-
+import { ButtonGroup } from "./sign-in-form.styles";
+import { AuthenicationContainer } from "../sign-up-form/sign-up-form.styles";
 import {
   SignInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 
 const SignInForm = () => {
@@ -39,25 +39,26 @@ const SignInForm = () => {
   };
 
   return (
-    <div className='sign-up-container'>
+    <AuthenicationContainer>
       <h2>Have an account?</h2>
       <span>Sign In with your email and password</span>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <FormInput label='Email' type='email' required name='email' />
-        <FormInput label='Password' type='password' required name='password' />
+        <FormInput label="Email" type="email" required name="email" />
+        <FormInput label="Password" type="password" required name="password" />
 
-        <div className='button-group'>
-          <Button type='submit'>Sign In</Button>
+        <ButtonGroup>
+          <Button type="submit">Sign In</Button>
+
           <Button
-            type='button'
-            buttonType={"google"}
+            type="button"
+            buttonType={BUTTON_TYPE_CLASSES.google}
             onClick={signInWithGoogle}
           >
             Google Sign In
           </Button>
-        </div>
+        </ButtonGroup>
       </form>
-    </div>
+    </AuthenicationContainer>
   );
 };
 export default SignInForm;

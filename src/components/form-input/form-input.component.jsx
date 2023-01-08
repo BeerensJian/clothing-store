@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import "./form-input.styles.scss";
+import { FormInputLabel, Input, Group } from "./form-input.styles.jsx";
 
 const FormInput = ({ label, ...otherProps }) => {
   const [shrink, setShrink] = useState(false);
@@ -14,19 +14,10 @@ const FormInput = ({ label, ...otherProps }) => {
   };
 
   return (
-    <div className="group">
-      <input
-        onChange={shrinkHandler}
-        ref={inputRef}
-        className="form-input"
-        {...otherProps}
-      />
-      {label && (
-        <label className={`${shrink ? "shrink" : ""} form-input-label`}>
-          {label}
-        </label>
-      )}
-    </div>
+    <Group>
+      <Input onChange={shrinkHandler} ref={inputRef} {...otherProps} />
+      {label && <FormInputLabel shrink={shrink}>{label}</FormInputLabel>}
+    </Group>
   );
 };
 export default FormInput;
