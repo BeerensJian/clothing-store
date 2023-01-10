@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
   const itemInCart = cartItems.find((item) => item.id === productToAdd.id);
@@ -36,15 +36,13 @@ export const CartContext = createContext({
   addItemToCart: () => null,
   cartCount: 0,
   removeItemFromCart: () => null,
-  deleteItem: () => null,
+  clearItemFromCart: () => null,
   totalValue: 0,
 });
 
 const CART_ACTION_TYPES = {
   TOGGLE_CART: "TOGGLE_CART",
-  ADD_CART_ITEM: "ADD_CART_ITEM",
-  REMOVE_CART_ITEM: "REMOVE_CART_ITEM",
-  DELETE_CART_ITEM: "DELETE_CART_ITEM",
+  UPDATE_CART_ITEMS: "UPDATE_CART_ITEMS",
 };
 
 const cartReducer = (state, action) => {
@@ -52,10 +50,17 @@ const cartReducer = (state, action) => {
 
   switch (type) {
     case CART_ACTION_TYPES.TOGGLE_CART:
-      console.log("toggled");
       return {
         ...state,
         isCartOpen: !state.isCartOpen,
+      };
+    case CART_ACTION_TYPES.UPDATE_CART_ITEMS:
+      const { newCartItems, cartQuantity, cartTotal } = payload;
+      return {
+        ...state,
+        cartItems: newCartItems,
+        cartCount: cartQuantity,
+        totalValue: cartTotal,
       };
     default:
       break;
@@ -77,28 +82,38 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: CART_ACTION_TYPES.TOGGLE_CART });
   };
 
-  useEffect(() => {
-    // * whenever cart items changes update the cartCount and totalValue
-    // const itemsInCart = cartItems.reduce((acumulator, currentElement) => {
-    //   return acumulator + currentElement.quantity;
-    // }, 0);
-    // const total = cartItems.reduce((accumulator, current) => {
-    //   return accumulator + current.price * current.quantity;
-    // }, 0);
-    // setTotalValue(total);
-    // setCartCount(itemsInCart);
-  }, [cartItems]);
+  const updateCartItemsReducer = (newCartItems) => {
+    // gets passed the updated array
+
+    // calculate quantity of the items in the cart
+    const cartQuantity = newCartItems.reduce((acumulator, currentElement) => {
+      return acumulator + currentElement.quantity;
+    }, 0);
+
+    //calculate the total value of all items
+    const cartTotal = newCartItems.reduce((accumulator, current) => {
+      return accumulator + current.price * current.quantity;
+    }, 0);
+
+    dispatch({
+      type: CART_ACTION_TYPES.UPDATE_CART_ITEMS,
+      payload: { newCartItems, cartQuantity, cartTotal },
+    });
+  };
 
   const addItemToCart = (productToAdd) => {
-    // setCartItems(addCartItem(cartItems, productToAdd));
+    const updatedCartItems = addCartItem(cartItems, productToAdd);
+    updateCartItemsReducer(updatedCartItems);
   };
 
   const removeItemFromCart = (cardItemtoRemove) => {
-    // setCartItems(removeCartItem(cartItems, cardItemtoRemove));
+    const updatedCartItems = removeCartItem(cartItems, cardItemtoRemove);
+    updateCartItemsReducer(updatedCartItems);
   };
 
-  const deleteItem = (id) => {
-    // setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const clearItemFromCart = (id) => {
+    const updatedCartItems = cartItems.filter((item) => item.id !== id);
+    updateCartItemsReducer(updatedCartItems);
   };
 
   return (
@@ -110,7 +125,7 @@ export const CartProvider = ({ children }) => {
         addItemToCart,
         cartCount,
         removeItemFromCart,
-        deleteItem,
+        clearItemFromCart,
         totalValue,
       }}
     >

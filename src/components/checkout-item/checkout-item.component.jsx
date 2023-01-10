@@ -10,12 +10,12 @@ import { CartContext } from "../../contexts/cart.context";
 
 const CheckoutItem = ({ cartItem }) => {
   const { imageUrl, name, quantity, price, id } = cartItem;
-  const { addItemToCart, removeItemFromCart, deleteItem } =
+  const { addItemToCart, removeItemFromCart, clearItemFromCart } =
     useContext(CartContext);
 
   const removeItemHandler = () => removeItemFromCart(cartItem);
   const addItemHandler = () => addItemToCart(cartItem);
-  const deleteItemHandler = () => deleteItem(id);
+  const clearItemHandler = () => clearItemFromCart(id);
   return (
     <CheckoutItemContainer>
       <ImageContainer>
@@ -33,7 +33,7 @@ const CheckoutItem = ({ cartItem }) => {
         </button>
       </Quantity>
       <ItemDetail>{quantity * price + "$"}</ItemDetail>
-      <DeleteButton onClick={deleteItemHandler}>&#10006;</DeleteButton>
+      <DeleteButton onClick={clearItemHandler}>&#10006;</DeleteButton>
     </CheckoutItemContainer>
   );
 };
