@@ -1,7 +1,12 @@
-import { Outlet, Link } from "react-router-dom";
-import { useContext } from "react";
+import { Outlet } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createUserDocumentFromAuth,
+  onAuthStateChangedListener,
+} from "../../utils/firebase/firebase.utils";
+
 import { ReactComponent as CrownLogo } from "../../assets/crown.svg";
-import { UserContext } from "../../contexts/user.context";
 import { CartContext } from "../../contexts/cart.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
@@ -12,25 +17,38 @@ import {
   NavLink,
   NavLinks,
 } from "./navigation.styles";
+import { setCurrentUser } from "../../store/user/user.action";
+import { selectCurrentUser } from "../../store/user/user.selector";
 
 const Navigation = () => {
-  const { currentUser } = useContext(UserContext);
+  const currentUser = useSelector(selectCurrentUser);
   const { isCartOpen } = useContext(CartContext);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      if (user) {
+        createUserDocumentFromAuth(user);
+      }
+      dispatch(setCurrentUser(user));
+    });
+    return unsubscribe;
+  }, [dispatch]);
 
   return (
     <>
       <NavigationContainer>
-        <LogoContainer to="/">
-          <CrownLogo className="logo" />
+        <LogoContainer to='/'>
+          <CrownLogo className='logo' />
         </LogoContainer>
         <NavLinks>
-          <NavLink to="/shop">Shop</NavLink>
+          <NavLink to='/shop'>Shop</NavLink>
           {currentUser ? (
-            <NavLink as="button" onClick={signOutUser}>
+            <NavLink as='button' onClick={signOutUser}>
               Sign Out
             </NavLink>
           ) : (
-            <NavLink to="/auth">{currentUser ? "Sign Out" : "Sign In"}</NavLink>
+            <NavLink to='/auth'>{currentUser ? "Sign Out" : "Sign In"}</NavLink>
           )}
           <CartIcon />
         </NavLinks>
