@@ -6,9 +6,7 @@ import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Authentication from "./routes/authenication/authenication.component";
-import { UserProvider } from "./contexts/user.context";
 import Shop from "./routes/shop/shop.component";
-import { CategoriesProvider } from "./contexts/categories.context";
 import { CartProvider } from "./contexts/cart.context";
 import Checkout from "./routes/checkout/checkout.component";
 import CategoriesPreview from './routes/categories-preview/categories-preview.component';
@@ -55,13 +53,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* <UserProvider> */}
-      <CategoriesProvider>
-        <CartProvider>
-          <RouterProvider router={router} />
-        </CartProvider>
-      </CategoriesProvider>
-      {/* </UserProvider> */}
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </Provider>
   </React.StrictMode>
 );
