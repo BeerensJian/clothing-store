@@ -22,6 +22,7 @@ import { selectCurrentUser } from "../../store/user/user.selector";
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
+  console.log(currentUser);
   const { isCartOpen } = useContext(CartContext);
   const dispatch = useDispatch();
 
@@ -33,7 +34,7 @@ const Navigation = () => {
       dispatch(setCurrentUser(user));
     });
     return unsubscribe;
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

@@ -1,1 +1,1 @@
-export const selectCurrentUser = (state) => state.user.getCurrentUser;
+export const selectCurrentUser = (state) => state.user.currentUser;
